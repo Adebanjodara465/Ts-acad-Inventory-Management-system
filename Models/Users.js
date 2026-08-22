@@ -1,7 +1,6 @@
 //where we will keep info about our users
 //creating user properties, bring in mongodb
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -21,18 +20,26 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    hasAdminAccess: {
+        type: String,
+        default: false
+    },
     phone: {
         type: String,
         required: true
     },
     role: {
         type: String,
-        enum: ['user', 'admin'], //??
+        enum: ['salesperson', 'admin', 'storekeeper'], //enum means the role can only be either user or admin, one or the other
         default: 'user'
     },
-    timestamp: true //date created and updated at
-});
+    
+},
+ {timestamps: true} //date created and updated at
+);
 
 
 //creating a model for the user schema
 const User = mongoose.model('User', userSchema);
+
+module.exports = User; //to allow every other module use it
