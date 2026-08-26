@@ -61,13 +61,13 @@ exports.loginUser = async (req, res) => {
         //check if user exists
         const user = await User.findOne({ email});
         if(!user) {
-            return res.status(404).json({ message: 'User not found'});
+            return res.status(404).json({ message: 'Invalid email or password'});
         }
 
         //check if password is correct
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid password'})
+            return res.status(401).json({ message: 'Invalid email or password'}) //no dey tell random people wetin you dey find for database
         }
 
         //generate a jwt token
