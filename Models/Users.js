@@ -30,8 +30,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['salesperson', 'admin', 'storekeeper'], //enum means the role can only be either user or admin, one or the other
-        default: 'user'
+        enum: ['salesperson', 'admin', 'storekeeper', 'user'], //enum means the role can only be either user or admin, one or the other
+        default: 'salesperson'
     },
     
 },
