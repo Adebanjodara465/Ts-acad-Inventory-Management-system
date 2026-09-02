@@ -72,9 +72,9 @@ exports.loginUser = async (req, res) => {
 
         //generate a jwt token
         const jwt = require('jsonwebtoken');
-        const token = jwt.sign({ id: user._id}, process.env.JWT_SECRET, { expiresIn: '1h'});
+        const token = jwt.sign({ id: user._id, email: user.email, name: user.name, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h'});//every jwt must have a role
 
-        res.status(200).json({ message: 'Login successful', token});
+        res.status(200).json({ message: 'Login successful', token, role: user.role,});
     } catch (error) {
         res.status(500).json({ message: 'Error logging in', error: error.message});
     }
