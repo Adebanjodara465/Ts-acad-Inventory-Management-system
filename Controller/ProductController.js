@@ -1,4 +1,6 @@
 const Product = require('../Models/Products'); //importing the product model so the controller fit control am
+//import authentication middleware
+const { protect } = require('../Middleware/auth'); 
 
 //create a new product the below is redundant code, we can use the one below it
 // const createProduct = async (req, res) => { try {const product = new Product(req.body); await product.save();
