@@ -9,26 +9,30 @@ const Product = require('../Models/Products'); //importing the product model so 
 //this is a better way to create a product, we can use this one instead of the one above it
 exports.createProduct = async (req, res) => {
   try{
+    //adding an array to take multiple inputs
+    const productsArray = Array.isArray(req.body) ? req.body : [req.body]; //checks if incoming is an array
+
     //must do validation to check if all fields are provided
-    if (!req.body.name || !req.body.size || !req.body.description || !req.body.price || !req.body.quantity) {
+    for (const product of productsArray) {
+         if (!product.name || !product.size || !product.description || !product.price || !product.quantity) {
         return res.status(400).json({ message: 'All fields are required' });
     }
+    }
+   
+    //inserting all items at once(many products or 1)
+    const savedProducts = await Product.insertMany(productsArray);
 
-    const { name, size, description, price, quantity } = req.body;
-
-    const product = new Product({
-        name,
-        size,
-        description,
-        price,
-        quantity
+    res.status(201).json({
+        message: 'Product(s) created successfully',
+        count: savedProducts.length,
+        products: savedProducts
     });
 
-       await product.save();
-       res.status(201).json({ message: 'Product created successfully', product });
-    }    catch (error) {
-       res.status(500).json({ message: 'Error creating product', error: error.message });
-    }
+    }catch (error) {
+       res.status(500).json({ 
+        message: 'Error creating product',
+         error: error.message });
+    }; 
 };
 
 //update a product
